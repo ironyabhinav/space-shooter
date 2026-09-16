@@ -1,0 +1,153 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    min-height: 100vh;
+    background: #000;
+    color: white;
+    font-family: Arial, sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+}
+
+.game {
+    width: 96vw;
+    height: 94vh;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+}
+
+h1 {
+    font-size: 40px;
+    letter-spacing: 8px;
+    margin-bottom: 16px;
+    flex-shrink: 0;
+}
+
+.hud {
+    width: 94%;
+    margin: 0 auto 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-shrink: 0;
+}
+
+.hud div {
+    text-align: left;
+}
+
+.hud div:last-child {
+    text-align: right;
+}
+
+.hud span {
+    display: block;
+    font-size: 12px;
+    letter-spacing: 4px;
+    color: #638aff;
+    margin-bottom: 4px;
+}
+
+.hud strong {
+    display: block;
+    font-size: 26px;
+    font-weight: bold;
+    letter-spacing: 3px;
+    color: #4edcff;
+}
+
+.game-box {
+    position: relative;
+    width: 100%;
+    flex: 1;
+    min-height: 0;
+    background: #000;
+    border: 1px solid #1c3445;
+    overflow: hidden;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+
+.message {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.82);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+    z-index: 10;
+}
+
+.message h2 {
+    font-size: 40px;
+    letter-spacing: 5px;
+}
+
+.message p {
+    color: #aaa;
+    font-size: 15px;
+}
+
+.message button {
+    background: transparent;
+    color: #4edcff;
+    border: 1px solid #4edcff;
+    padding: 12px 30px;
+    font-size: 14px;
+    letter-spacing: 2px;
+    cursor: pointer;
+}
+
+.message button:hover {
+    background: #4edcff;
+    color: #000;
+}
+
+#finalScore {
+    color: #4edcff;
+}
+
+@media (max-width: 700px) {
+
+    .game {
+        width: 96vw;
+        height: 94vh;
+    }
+
+    h1 {
+        font-size: 28px;
+        letter-spacing: 5px;
+        margin-bottom: 12px;
+    }
+
+    .hud {
+        width: 94%;
+        margin-bottom: 8px;
+    }
+
+    .hud span {
+        font-size: 10px;
+        letter-spacing: 3px;
+    }
+
+    .hud strong {
+        font-size: 20px;
+    }
+
+    .message h2 {
+        font-size: 30px;
+    }
+}
