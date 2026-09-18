@@ -16,8 +16,8 @@ body {
 }
 
 .game {
-    width: 96vw;
-    height: 94vh;
+    width: 100vw;
+    height: 100vh;
     text-align: center;
     display: flex;
     flex-direction: column;
@@ -71,6 +71,11 @@ h1 {
     background: #000;
     border: 1px solid #1c3445;
     overflow: hidden;
+}
+
+.gamecanvas{
+    width: 50px;
+    height: 100px;
 }
 
 canvas {

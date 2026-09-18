@@ -13,6 +13,7 @@ var highScore = Number(localStorage.getItem("spaceShooterHighScore")) || 0;
 
 var paused = false;
 var gameOver = false;
+var shooting = true;
 
 var keys = {};
 var bullets = [];
@@ -27,6 +28,7 @@ var player = {
 };
 
 var enemySpawnTime = 0;
+var shootTime = 0;
 var lastTime = 0;
 
 function resize() {
@@ -69,12 +71,21 @@ function collision(a, b) {
 }
 
 function update(deltaTime) {
+
     if (keys["ArrowLeft"] || keys["a"] || keys["A"]) {
         player.x -= player.speed * deltaTime;
     }
 
     if (keys["ArrowRight"] || keys["d"] || keys["D"]) {
         player.x += player.speed * deltaTime;
+    }
+
+    if (keys["ArrowUp"] || keys["w"] || keys["W"]) {
+        player.y -= player.speed * deltaTime;
+    }
+
+    if (keys["ArrowDown"] || keys["s"] || keys["S"]) {
+        player.y += player.speed * deltaTime;
     }
 
     if (player.x < 0) {
@@ -85,7 +96,23 @@ function update(deltaTime) {
         player.x = canvas.width - player.width;
     }
 
+    if (player.y < 0) {
+        player.y = 0;
+    }
+
+    if (player.y + player.height > canvas.height) {
+        player.y = canvas.height - player.height;
+    }
+
+    shootTime += deltaTime;
+
+    if (shooting && shootTime >= 0.15) {
+        shoot();
+        shootTime = 0;
+    }
+
     for (var i = bullets.length - 1; i >= 0; i--) {
+
         bullets[i].y -= bullets[i].speed * deltaTime;
 
         if (bullets[i].y < -20) {
@@ -101,6 +128,7 @@ function update(deltaTime) {
     }
 
     for (var i = enemies.length - 1; i >= 0; i--) {
+
         enemies[i].y += enemies[i].speed * deltaTime;
 
         if (collision(player, enemies[i])) {
@@ -117,18 +145,23 @@ function update(deltaTime) {
 }
 
 function checkHits() {
+
     for (var i = enemies.length - 1; i >= 0; i--) {
+
         for (var j = bullets.length - 1; j >= 0; j--) {
 
             if (collision(bullets[j], enemies[i])) {
+
                 enemies.splice(i, 1);
                 bullets.splice(j, 1);
 
                 score += 10;
 
-                scoreBox.textContent = String(score).padStart(4, "0");
+                scoreBox.textContent =
+                    String(score).padStart(4, "0");
 
                 if (score > highScore) {
+
                     highScore = score;
 
                     highScoreBox.textContent =
@@ -147,28 +180,46 @@ function checkHits() {
 }
 
 function drawPlayer() {
+
     ctx.fillStyle = "#4edcff";
 
     ctx.beginPath();
-    ctx.moveTo(player.x + 21, player.y);
-    ctx.lineTo(player.x, player.y + 30);
-    ctx.lineTo(player.x + 42, player.y + 30);
+
+    ctx.moveTo(
+        player.x + player.width / 2,
+        player.y
+    );
+
+    ctx.lineTo(
+        player.x,
+        player.y + player.height
+    );
+
+    ctx.lineTo(
+        player.x + player.width,
+        player.y + player.height
+    );
+
     ctx.closePath();
+
     ctx.fill();
 
     ctx.fillStyle = "#071018";
+
     ctx.fillRect(
-        player.x + 17,
-        player.y + 15,
-        8,
-        7
+        player.x + player.width * 0.6,
+        player.y + player.height * 0.5,
+        player.width * 0.2,
+        player.height * 0.23
     );
 }
 
 function drawBullets() {
+
     ctx.fillStyle = "#ffffff";
 
     for (var i = 0; i < bullets.length; i++) {
+
         ctx.fillRect(
             bullets[i].x,
             bullets[i].y,
@@ -179,7 +230,9 @@ function drawBullets() {
 }
 
 function drawEnemies() {
+
     for (var i = 0; i < enemies.length; i++) {
+
         var e = enemies[i];
 
         ctx.fillStyle = "#ff5278";
@@ -224,7 +277,9 @@ function drawEnemies() {
 }
 
 function draw() {
+
     ctx.fillStyle = "#000";
+
     ctx.fillRect(
         0,
         0,
@@ -238,8 +293,10 @@ function draw() {
 }
 
 function endGame() {
+
     gameOver = true;
     paused = false;
+    shooting = false;
 
     bullets = [];
     enemies = [];
@@ -252,6 +309,7 @@ function endGame() {
 }
 
 function togglePause() {
+
     if (gameOver) return;
 
     paused = !paused;
@@ -264,13 +322,18 @@ function togglePause() {
 }
 
 function resetGame() {
+
     score = 0;
+
     bullets = [];
     enemies = [];
+
     enemySpawnTime = 0;
+    shootTime = 0;
 
     paused = false;
     gameOver = false;
+    shooting = true;
 
     scoreBox.textContent = "0000";
 
@@ -284,6 +347,7 @@ function resetGame() {
 document.addEventListener("keydown", function(e) {
 
     if (e.key === "Enter") {
+
         e.preventDefault();
 
         if (!e.repeat) {
@@ -293,28 +357,21 @@ document.addEventListener("keydown", function(e) {
         return;
     }
 
-    if (e.code === "Space") {
-        e.preventDefault();
-
-        if (!e.repeat) {
-            shoot();
-        }
-
-        return;
-    }
-
     keys[e.key] = true;
 });
 
 document.addEventListener("keyup", function(e) {
+
     keys[e.key] = false;
 });
 
 restart.addEventListener("click", function() {
+
     resetGame();
 });
 
 window.addEventListener("resize", function() {
+
     resize();
 });
 
